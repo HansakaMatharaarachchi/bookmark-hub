@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -52,3 +52,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+
+
+//API Routes V1
+
+// Members
+$route["api/v1/members"]["POST"] = "api/v1/members/index";
+$route["api/v1/members/me"]["GET"] = "api/v1/members/me";
+$route["api/v1/members/me"]["DELETE"] = "api/v1/members/me";
+
+// Auth
+$route["api/v1/auth/login"]["POST"] = "api/v1/auth/login";
+$route["api/v1/auth/logout"]["POST"] = "api/v1/auth/logout";
+$route["api/v1/auth/refresh"]["POST"] = "api/v1/auth/refresh";
+
+// BookMarks
+$route["api/v1/bookmarks"]["GET"] = "api/v1/bookmarks/index";
+$route["api/v1/bookmarks"]["POST"] = "api/v1/bookmarks/index";
+$route["api/v1/bookmarks/(:num)"]["GET"] = "api/v1/bookmarks/show/$1";
+$route["api/v1/bookmarks/(:num)"]["PUT"] = "api/v1/bookmarks/update/$1";
+$route["api/v1/bookmarks/(:num)"]["DELETE"] = "api/v1/bookmarks/delete/$1";
+
+// Force Strict Routing
+// $route['api/v1/(:any)'] = "welcome";
