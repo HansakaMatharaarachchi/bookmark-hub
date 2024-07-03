@@ -14,6 +14,13 @@ class BaseRestController extends RestController
   const HTTP_GONE = 410;
   const HTTP_UNPROCESSABLE_ENTITY = 422;
 
+  public function __construct()
+  {
+    parent::__construct();
+
+    $this->load->library('jwt_auth');
+  }
+
   /**
    * Authorize a request.
    *
@@ -22,8 +29,6 @@ class BaseRestController extends RestController
   protected function authorize()
   {
     try {
-      $this->load->library('jwt_auth');
-
       // Get the authorization header.
       $authorization_header = $this->input->get_request_header('Authorization', true);
 

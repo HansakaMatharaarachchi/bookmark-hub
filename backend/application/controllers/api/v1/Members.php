@@ -68,7 +68,7 @@ class Members extends BaseRestController
           'data' => $authenticated_member
         ], BaseRestController::HTTP_OK);
       } else {
-        log_message('debug', 'Member not found: ' . $authenticated_member_id);
+        log_message('error', 'Member not found: ' . $authenticated_member_id);
 
         $this->response([
           'status' => false,

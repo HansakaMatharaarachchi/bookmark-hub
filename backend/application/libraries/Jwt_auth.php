@@ -75,7 +75,7 @@ class Jwt_auth
   /**
    * Generate a refresh token.
    *
-   * @param array $data The data to be added to the token.
+   * @param array $data Custom claims to be added to the token.
    * @return array The generated refresh token and its expiration time.
    * @throws Exception If the token is invalid.
    */
@@ -96,11 +96,9 @@ class Jwt_auth
       'exp' => $expiration_time,
     );
 
-    $token = JWT::encode($token_payload, $token_key, $algorithm);
-
-    return (object) [
-      'token' => $token,
-      'expire_at' => $expiration_time,
+    return [
+      'token' => JWT::encode($token_payload, $token_key, $algorithm),
+      'expiration' => $expiration_time,
     ];
   }
 
