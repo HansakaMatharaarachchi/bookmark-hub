@@ -4,7 +4,7 @@ USE bookmark_hub;
 
 CREATE TABLE member (
     member_id INT PRIMARY KEY AUTO_INCREMENT,
-    member_name VARCHAR(50) NOT NULL,
+    nickname VARCHAR(50) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash CHAR(60) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
