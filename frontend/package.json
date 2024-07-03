@@ -1,0 +1,27 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/backbone": "^1.4.19",
+    "@types/jquery": "^3.5.30",
+    "@types/underscore": "^1.11.15",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1"
+  },
+  "dependencies": {
+    "backbone": "^1.6.0",
+    "jquery": "^3.7.1",
+    "sweetalert2": "^11.12.1",
+    "underscore": "^1.13.6"
+  }
+}
