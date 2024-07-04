@@ -1,5 +1,7 @@
 import BasePage from "../views/pages/BasePage";
+import BookmarksPage from "../views/pages/BookMarks";
 import LoginPage from "../views/pages/LoginPage";
+import SignupPage from "../views/pages/SignupPage";
 
 type Pages = {
 	[key: string]: {
@@ -9,8 +11,15 @@ type Pages = {
 };
 
 export const pages: Pages = {
+	signup: {
+		page: SignupPage,
+	},
 	login: {
 		page: LoginPage,
+	},
+	bookmarks: {
+		page: BookmarksPage,
+		requiredAuth: true,
 	},
 };
 

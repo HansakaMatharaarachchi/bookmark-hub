@@ -24,10 +24,7 @@ class LoginPage extends BasePage {
 
 	private handleSubmitButtonClick(e: JQuery.ClickEvent) {
 		e.preventDefault();
-		this.submitForm();
-	}
 
-	private submitForm() {
 		const email = this.$("#email").val() as string;
 		const password = this.$("#password").val() as string;
 

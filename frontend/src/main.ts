@@ -1,11 +1,14 @@
 import { history } from "backbone";
 import { AppRouter } from "./app/routers/AppRouter";
 
+import $ from "jquery";
 import User from "./app/models/User";
 import { PageName, pages } from "./app/routers/pageConfig";
+import BasePage from "./app/views/pages/BasePage";
 import "./assets/styles/main.css";
 
 const user = User.getInstance();
+let currentPage: BasePage;
 
 const renderPage = (pageName: PageName, params = {}) => {
 	const { page: Page, requiredAuth } = pages[pageName];
@@ -23,8 +26,17 @@ const renderPage = (pageName: PageName, params = {}) => {
 		return;
 	}
 
-	// Render the page.
-	new Page({ ...params, el: "#app" }).render();
+	// Clean up the previous page.
+	if (currentPage) {
+		currentPage.remove();
+	}
+
+	const newPage = new Page(params);
+
+	// Render the new page.
+	$("#app").append(newPage.render().el);
+
+	currentPage = newPage;
 };
 
 // Initialize the router.
