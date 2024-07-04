@@ -53,7 +53,7 @@ class Auth {
 				error: (error) => {
 					let errorMessage = "Something went wrong. Please try again later.";
 
-					switch (error.status) {
+					switch (error?.status) {
 						case 401:
 							errorMessage = "Invalid email or password.";
 							break;
