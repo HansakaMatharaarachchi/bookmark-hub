@@ -1,0 +1,66 @@
+<main class="flex items-center justify-center flex-1 min-h-svh">
+	<div class="flex flex-col items-center flex-1 p-6 sm:w-auto sm:flex-initial">
+		<!-- Banner -->
+		<div
+			class="flex-col items-start justify-center hidden gap-4 px-12 py-6 md:flex"
+		>
+			<img src="logo.svg" alt="logo" class="w-64" />
+		</div>
+		<!-- Login form -->
+		<form
+			class="flex sm:min-w-[410px] flex-1 flex-col gap-4 p-5 rounded-xl border border-black/10"
+		>
+			<span class="text-3xl text-center">Log In</span>
+			<div class="flex flex-col gap-2.5">
+				<label
+					for="email"
+					title="email address is required to log in"
+					class="text-base place-self-start text-black/80 cursor-help"
+				>
+					Email address
+					<span class="text-red-500">*</span>
+				</label>
+				<input
+					type="text"
+					required
+					name="email"
+					id="email"
+					class="h-14 px-4 py-2.5 text-sm text-input-text rounded-xl bg-primary-ash placeholder:placeholder-text sm:leading-6 focus:outline-none focus:ring-1 focus:ring-primary/50 form-field"
+					placeholder="Enter email address..."
+				/>
+			</div>
+			<div class="gap-2.5 flex flex-col">
+				<label
+					for="password"
+					title="password is required to log in"
+					class="text-base place-self-start text-black/80 cursor-help"
+				>
+					Password
+					<span class="text-red-500">*</span>
+				</label>
+				<input
+					type="password"
+					required
+					name="password"
+					id="password"
+					class="h-14 px-4 py-2.5 text-sm text-input-text rounded-xl bg-primary-ash placeholder:placeholder-text sm:leading-6 focus:outline-none focus:ring-1 focus:ring-primary/50 form-field"
+					placeholder="Enter password..."
+				/>
+			</div>
+			<button
+				id="submit-btn"
+				type="submit"
+				class="self-end px-8 py-4 text-sm font-medium rounded-full text-primary-text bg-primary hover:ring-2 hover:ring-primary/50"
+			>
+				<div class="flex items-center gap-2">Log In</div>
+			</button>
+
+			<span class="text-base text-center"
+				>New to DevStack?
+				<a href="/signup" class="underline text-primary nav-link"
+					>Sign Up</a
+				></span
+			>
+		</form>
+	</div>
+</main>
