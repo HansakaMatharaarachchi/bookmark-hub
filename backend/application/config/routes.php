@@ -67,7 +67,7 @@ $route["api/v1/auth/login"]["POST"] = "api/v1/auth/login";
 $route["api/v1/auth/logout"]["POST"] = "api/v1/auth/logout";
 $route["api/v1/auth/refresh"]["POST"] = "api/v1/auth/refresh";
 
-// BookMarks
+// Bookmarks
 $route["api/v1/bookmarks"]["GET"] = "api/v1/bookmarks/index";
 $route["api/v1/bookmarks"]["POST"] = "api/v1/bookmarks/index";
 $route["api/v1/bookmarks/(:num)"]["GET"] = "api/v1/bookmarks/show/$1";
