@@ -1,24 +1,36 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { history } from "backbone";
+import { AppRouter } from "./app/routers/AppRouter";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+import User from "./app/models/User";
+import { PageName, pages } from "./app/routers/pageConfig";
+import "./assets/styles/main.css";
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const user = User.getInstance();
+
+const renderPage = (pageName: PageName, params = {}) => {
+	const { page: Page, requiredAuth } = pages[pageName];
+
+	if (!Page) return;
+
+	if (requiredAuth && !user.isLoggedIn()) {
+		history.navigate("/login", { trigger: true });
+		return;
+	}
+
+	// Redirect to home page if trying to access login/signup page while already logged in.
+	if (user.isLoggedIn() && (pageName === "login" || pageName === "signup")) {
+		router.navigate("/", { replace: true, trigger: true });
+		return;
+	}
+
+	// Render the page.
+	new Page({ ...params, el: "#app" }).render();
+};
+
+// Initialize the router.
+const router = new AppRouter({
+	renderPage,
+});
+
+// Start listening to routes.
+history.start({ pushState: true });
