@@ -53,7 +53,7 @@ class Auth {
 				error: (error) => {
 					let errorMessage = "Something went wrong. Please try again later.";
 
-					switch (error?.status) {
+					switch (error.status) {
 						case 401:
 							errorMessage = "Invalid email or password.";
 							break;
@@ -116,7 +116,6 @@ class Auth {
 	 */
 	private async refreshToken() {
 		return new Promise<void>((resolve, reject) => {
-			// @ts-ignore
 			ajax({
 				url: `${AUTH_API_URL}/refresh_token`,
 				method: "POST",
@@ -164,8 +163,7 @@ class Auth {
 	 * @see https://stackoverflow.com/questions/11793430/retry-a-jquery-ajax-request-which-has-callbacks-attached-to-its-deferred
 	 */
 	private addAuthInterceptor() {
-		// @ts-ignore
-		ajaxPrefilter((options, originalOptions: any, jqXHR) => {
+		ajaxPrefilter((options, originalOptions, jqXHR) => {
 			// Only intercept API requests that are sent to the backend.
 			if (
 				options.url?.startsWith(BASE_API_URL) &&
@@ -197,16 +195,18 @@ class Auth {
 
 					jqXHR.done(dfd.resolve);
 
-					// if the request fails, do something else yet still resolve.
-					jqXHR.fail(async () => {
-						const args = [...arguments];
-
+					jqXHR.fail(async (jqXHR, textStatus, errorThrown) => {
+						// If the request fails due to an expired access token, refresh the token and retry the request.
 						if (jqXHR.status === 401 && originalOptions._retry > 0) {
 							try {
 								await this.refreshToken();
 							} catch (error) {
 								// If the refresh token request fails, log out the user.
 								await this.logout();
+
+								dfd.reject(
+									new AuthError("Session expired. Please log in again.")
+								);
 							}
 
 							// re-send the original request with the new refreshed token.
@@ -217,7 +217,7 @@ class Auth {
 								dfd.fail(originalOptions._error);
 							}
 
-							dfd.rejectWith(jqXHR, args);
+							dfd.rejectWith(jqXHR, [jqXHR, textStatus, errorThrown]);
 						}
 					});
 
