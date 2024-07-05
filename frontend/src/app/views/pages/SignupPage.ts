@@ -21,6 +21,8 @@ class SignupPage extends BasePage {
 	}
 
 	render() {
+		super.render();
+
 		this.$el.html(template(signupTemplate)());
 		this.toggleSubmitButtonState();
 
@@ -103,7 +105,7 @@ class SignupPage extends BasePage {
 					error: (_model: Model, response: JQueryXHR) => {
 						Swal.close();
 
-						if (response?.status === 409) {
+						if (response.status === 409) {
 							Swal.fire({
 								title: "Email already exists",
 								text: "Please use a different email address or log in.",

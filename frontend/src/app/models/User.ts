@@ -1,3 +1,4 @@
+import { ModelDestroyOptions } from "backbone";
 import Auth, { AuthError } from "../auth/Auth";
 import Member, { MemberAttributes } from "./Member";
 
@@ -78,7 +79,19 @@ class User extends Member<UserAttributes> {
 		}
 	}
 
-	async logout() {
+	public destroy(options?: ModelDestroyOptions) {
+		const result = super.destroy(options);
+
+		if (result) {
+			result.then(async () => {
+				await this.logout();
+			});
+		}
+
+		return result;
+	}
+
+	public async logout() {
 		await this.auth.logout();
 		this.set(this.defaults());
 	}

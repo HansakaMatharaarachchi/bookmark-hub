@@ -16,7 +16,7 @@ const renderPage = (pageName: PageName, params = {}) => {
 	if (!Page) return;
 
 	if (requiredAuth && !user.isLoggedIn()) {
-		history.navigate("/login", { trigger: true });
+		history.navigate("/signup", { trigger: true });
 		return;
 	}
 

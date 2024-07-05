@@ -18,6 +18,8 @@ class LoginPage extends BasePage {
 	}
 
 	render() {
+		super.render();
+
 		this.$el.html(template(loginTemplate)());
 		return this;
 	}

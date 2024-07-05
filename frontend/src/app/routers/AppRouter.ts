@@ -4,7 +4,7 @@ import { PageName } from "./pageConfig";
 
 // Define routes.
 const routes = {
-	"": "login",
+	"": "bookmarks",
 	signup: "signup",
 	login: "login",
 	bookmarks: "bookmarks",
@@ -36,6 +36,10 @@ class AppRouter extends Router {
 
 	login() {
 		this.renderPage("login");
+	}
+
+	bookmarks() {
+		this.renderPage("bookmarks");
 	}
 
 	// notFound() {
