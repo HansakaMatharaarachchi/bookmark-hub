@@ -13,8 +13,8 @@ CREATE TABLE member (
 CREATE TABLE bookmark (
     bookmark_id INT PRIMARY KEY AUTO_INCREMENT,
     member_id INT NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    url VARCHAR(255) NOT NULL,
+    title VARCHAR(150) NOT NULL,
+    url VARCHAR(2083) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_bookmark_member_id FOREIGN KEY (member_id) REFERENCES member(member_id) ON DELETE CASCADE
 );

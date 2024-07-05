@@ -14,3 +14,7 @@
 .tox .tox-edit-area::before {
 	@apply border border-primary/50 !important;
 }
+
+.bookmark-page {
+	@apply flex min-h-screen flex-col;
+}

@@ -15,7 +15,7 @@ class SignupPage extends BasePage {
 
 	events() {
 		return {
-			"change input.form-field": "handleInputChange",
+			"input input.form-field": "handleInputChange",
 			"click #submit-btn": "handleSubmitButtonClick",
 		};
 	}

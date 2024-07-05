@@ -3,3 +3,4 @@ export const BASE_API_URL =
 
 export const AUTH_API_URL = `${BASE_API_URL}auth`;
 export const MEMBER_API_URL = `${BASE_API_URL}members`;
+export const BOOKMARK_API_URL = `${BASE_API_URL}bookmarks`;

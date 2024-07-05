@@ -31,7 +31,7 @@ const renderPage = (pageName: PageName, params = {}) => {
 		currentPage.remove();
 	}
 
-	const newPage = new Page(params);
+	const newPage = new Page({ params });
 
 	// Render the new page.
 	$("#app").append(newPage.render().el);
