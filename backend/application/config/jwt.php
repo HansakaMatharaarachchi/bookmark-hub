@@ -24,6 +24,6 @@ $config['token_issuer'] = base_url();
 $config['algorithm'] = 'HS256';
 
 $config['access_token_key'] = $_ENV['JWT_ACCESS_TOKEN_SECRET'];
-$config['access_token_expire'] = 60 * 60; // 1 hour
+$config['access_token_expire'] = 60 * 15; // 15 minutes
 $config['refresh_token_key'] = $_ENV['JWT_REFRESH_TOKEN_SECRET'];
 $config['refresh_token_threshold'] = 60 * 60 * 24 * 7; // 7 days
