@@ -69,10 +69,10 @@ $route["api/v1/auth/refresh"]["POST"] = "api/v1/auth/refresh";
 
 // Bookmarks
 $route["api/v1/bookmarks"]["GET"] = "api/v1/bookmarks/index";
-$route["api/v1/bookmarks"]["POST"] = "api/v1/bookmarks/index";
-$route["api/v1/bookmarks/(:num)"]["GET"] = "api/v1/bookmarks/show/$1";
-$route["api/v1/bookmarks/(:num)"]["PUT"] = "api/v1/bookmarks/update/$1";
-$route["api/v1/bookmarks/(:num)"]["DELETE"] = "api/v1/bookmarks/delete/$1";
+// $route["api/v1/bookmarks"]["POST"] = "api/v1/bookmarks/index";
+$route['api/v1/bookmarks/(:num)']['GET'] = 'api/v1/bookmarks/bookmark/$1';
+// $route["api/v1/bookmarks/(:num)"]["PUT"] = "api/v1/bookmarks/update/$1";
+// $route["api/v1/bookmarks/(:num)"]["DELETE"] = "api/v1/bookmarks/delete/$1";
 
 // Force Strict Routing
 // $route['api/v1/(:any)'] = "welcome";

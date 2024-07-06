@@ -32,9 +32,8 @@ class BookMark extends Model<Partial<BookmarkAttributes>> {
 		}
 
 		if (
-			!attributes.tags ||
-			attributes.tags instanceof TagCollection === false ||
-			attributes.tags.length === 0
+			!(attributes.tags instanceof TagCollection) ||
+			attributes.tags.isEmpty()
 		) {
 			errors.tags = "At least one tag is required";
 		}
