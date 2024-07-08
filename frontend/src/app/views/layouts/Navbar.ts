@@ -106,10 +106,32 @@ class NavBar extends View {
 				showCancelButton: true,
 				confirmButtonText: "Yes, delete it!",
 				cancelButtonText: "No, cancel!",
-				showLoaderOnConfirm: true,
 			}).then(async (result) => {
 				if (result.isConfirmed) {
-					await this.user?.destroy();
+					try {
+						Swal.fire({
+							title: "Deleting account...",
+							text: "Please wait while we delete your account.",
+							allowOutsideClick: false,
+							allowEnterKey: false,
+							allowEscapeKey: false,
+							didOpen: () => {
+								Swal.showLoading();
+							},
+						});
+
+						await this.user?.destroy();
+
+						Swal.close();
+					} catch {
+						Swal.close();
+
+						Swal.fire({
+							icon: "error",
+							title: "Oops!",
+							text: "Something went wrong while deleting your account. Please try again!",
+						});
+					}
 				}
 			});
 		}
@@ -127,7 +149,30 @@ class NavBar extends View {
 				showLoaderOnConfirm: true,
 			}).then(async (result) => {
 				if (result.isConfirmed) {
-					await this.user?.logout();
+					try {
+						Swal.fire({
+							title: "Signing out...",
+							text: "Please wait while we sign you out.",
+							allowOutsideClick: false,
+							allowEnterKey: false,
+							allowEscapeKey: false,
+							didOpen: () => {
+								Swal.showLoading();
+							},
+						});
+
+						await this.user?.logout();
+
+						Swal.close();
+					} catch {
+						Swal.close();
+
+						Swal.fire({
+							icon: "error",
+							title: "Oops!",
+							text: "Something went wrong while signing you out. Please try again!",
+						});
+					}
 				}
 			});
 		}
