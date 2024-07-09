@@ -66,24 +66,26 @@ class Bookmark_model extends CI_Model
       throw new ValidationException('Member ID is required');
     }
 
+    // Initialize filters
+    $search = isset($filters['search']) ? $filters['search'] : '';
+    $tags = isset($filters['tags']) ? $filters['tags'] : [];
+
     // Get bookmarks.
-    $this->db->select('*');
+    $this->db->select('b.*');
     $this->db->from("$this->table b");
     $this->db->where('b.member_id', $member_id);
 
-    // Apply filters.
-
-    // Title filter.
-    if (!empty($filters['title'])) {
-      $this->db->like('b.title', $this->db->escape_like_str($filters['title']));
+    // Apply search filter
+    if (!empty($search)) {
+      $this->db->like('b.title', $this->db->escape_like_str($search));
     }
 
-    // Tags filter.
-    if (!empty($filters['tags']) && is_array($filters['tags'])) {
-      $this->db->join("$this->bookmark_tag_table bt", 'b.id = bt.bookmark_id');
-      $this->db->join("$this->tag_table t", 'bt.tag_id = t.id');
-      $this->db->where_in('t.name', $filters['tags']);
-      $this->db->group_by('b.id');
+    // Apply tags filter
+    if (!empty($tags)) {
+      $this->db->join($this->bookmark_tag_table . ' bt', 'b.bookmark_id = bt.bookmark_id');
+      $this->db->join($this->tag_table . ' t', 'bt.tag_id = t.tag_id');
+      $this->db->where_in('t.name', $tags);
+      $this->db->group_by('b.bookmark_id');
     }
 
     // Get total number of bookmarks.

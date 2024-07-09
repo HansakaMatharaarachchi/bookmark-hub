@@ -16,9 +16,21 @@ class Bookmarks extends BaseRestController
     try {
       $authenticated_member_id = $this->authorize()->sub;
 
-      $filters = $this->get('filters', true) ? json_decode($this->get('filters', true), true) : [];
+      $search = $this->get('search', true);
+      $tags = $this->get('tags', true);
       $limit = $this->get('limit', true) ? intval($this->get('limit', true)) : 10;
       $offset = $this->get('offset', true) ? intval($this->get('offset', true)) : 0;
+
+      // Prepare filters.
+      $filters = [];
+
+      if (!empty($tags)) {
+        $filters['tags'] = explode(',', $tags);
+      }
+
+      if (!empty($search)) {
+        $filters['search'] = $search;
+      }
 
       // Get Filtered Bookmarks.
       [
