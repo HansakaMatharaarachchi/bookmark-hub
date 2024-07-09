@@ -270,7 +270,7 @@ class Bookmark_model extends CI_Model
     $this->validate_tag_names($tag_names);
 
     $existing_tag_ids = $this->get_existing_tag_ids($member_id, $tag_names);
-    $new_tag_names = array_diff($tag_names, array_keys($existing_tag_ids));
+    $new_tag_names = array_udiff($tag_names, array_keys($existing_tag_ids), 'strcasecmp');
 
     if (!empty($new_tag_names)) {
       $this->insert_tags($member_id, $new_tag_names);
@@ -315,7 +315,9 @@ class Bookmark_model extends CI_Model
   private function insert_tags($member_id, $tag_names)
   {
     $tags = array_map(function ($name) use ($member_id) {
-      return ['name' => $name, 'member_id' => $member_id];
+      return [
+        'name' => strtolower($name), 'member_id' => $member_id
+      ];
     }, $tag_names);
 
     $this->db->insert_batch('tag', $tags);
