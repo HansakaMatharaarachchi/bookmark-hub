@@ -25,6 +25,10 @@ class BookmarkCollection extends Collection<BookMark> {
 		super(bookmarks, options);
 		this.model = BookMark;
 		this.url = BOOKMARK_API_URL;
+
+		this.pageNumber = options?.page ?? this.DEFAULT_PAGE;
+		this.perPage = options?.perPage ?? this.DEFAULT_PER_PAGE;
+		this.totalBookmarkCount = options?.totalBookmarkCount;
 	}
 
 	public fetchPage(

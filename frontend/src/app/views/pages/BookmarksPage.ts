@@ -107,7 +107,7 @@ class BookmarksPage extends BasePage {
 	}
 
 	// Render the bookmark form to add/edit a bookmark.
-	private async renderBookMarkForm(bookmark?: BookMark) {
+	private async renderBookMarkForm(bookmark?: BookMark, onCancel?: () => void) {
 		bookmark = new BookMark(bookmark?.toJSON() ?? {});
 
 		const isCreatingNew = bookmark.isNew();
@@ -169,12 +169,9 @@ class BookmarksPage extends BasePage {
 				try {
 					if (bookmark.isValid()) {
 						if (isCreatingNew) {
-							await bookmark.save(null, {
-								wait: true,
-							});
+							await bookmark.save();
 						} else {
 							await bookmark.save(null, {
-								wait: true,
 								patch: true,
 							});
 						}
@@ -190,6 +187,20 @@ class BookmarksPage extends BasePage {
 					);
 				}
 			},
+		}).then(async (result) => {
+			if (result.isConfirmed) {
+				await Swal.fire({
+					title: `${isCreatingNew ? "Added" : "Edited"}!`,
+					text: `Bookmark has been ${
+						isCreatingNew ? "added" : "edited"
+					} successfully.`,
+					icon: "success",
+					showConfirmButton: false,
+					timer: 2000,
+				});
+			} else {
+				onCancel?.();
+			}
 		});
 	}
 
@@ -220,7 +231,9 @@ class BookmarksPage extends BasePage {
 				showConfirmButton: false,
 				didRender: () => {
 					$("#edit-bookmark-btn").on("click", async () => {
-						await this.renderBookMarkForm(bookmarkToBeRendered);
+						await this.renderBookMarkForm(bookmarkToBeRendered, () =>
+							this.renderBookmark(event)
+						);
 					});
 					$("#delete-bookmark-btn").on("click", async () => {
 						Swal.fire({
@@ -234,7 +247,13 @@ class BookmarksPage extends BasePage {
 							if (result.isConfirmed) {
 								Swal.showLoading();
 								if (await this.deleteBookmark(bookmarkToBeRendered)) {
-									Swal.close();
+									Swal.fire({
+										title: "Deleted!",
+										text: "Bookmark has been deleted successfully.",
+										icon: "success",
+										showConfirmButton: false,
+										timer: 2000,
+									});
 
 									// Fetch the bookmarks again.
 									this.collection.fetch();

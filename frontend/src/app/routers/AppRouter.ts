@@ -37,7 +37,7 @@ class AppRouter extends Router {
 	bookmarks() {
 		const queryParams = new URLSearchParams(window.location.search);
 
-		const page = parseInt(queryParams.get("page") ?? "1");
+		const pageNumber = parseInt(queryParams.get("page") ?? "1");
 		const tags = queryParams
 			?.get("tags")
 			?.split(",")
@@ -53,7 +53,7 @@ class AppRouter extends Router {
 		// Pass the query param values to the bookmarks page.
 		this.renderPage("bookmarks", {
 			filters: {
-				page,
+				pageNumber,
 				tags,
 			},
 		});
