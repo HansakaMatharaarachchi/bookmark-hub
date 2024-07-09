@@ -21,7 +21,20 @@ class BookMark extends Model<Partial<BookmarkAttributes>> {
 		super(attributes);
 
 		if (attributes?.created_at) {
-			this.set("created_at", moment(attributes.created_at));
+			this.set(
+				"created_at",
+				moment.isMoment(attributes.created_at)
+					? attributes.created_at
+					: moment(attributes.created_at)
+			);
+		}
+		if (attributes?.tags) {
+			this.set(
+				"tags",
+				attributes?.tags instanceof TagCollection
+					? attributes.tags
+					: new TagCollection(attributes?.tags)
+			);
 		}
 	}
 
@@ -45,9 +58,24 @@ class BookMark extends Model<Partial<BookmarkAttributes>> {
 			attributes.tags.isEmpty()
 		) {
 			errors.tags = "At least one tag is required";
+		} else {
+			const invalidTags = attributes.tags.filter((tag) => !tag.isValid());
+
+			if (invalidTags.length > 0) {
+				errors.tags = "Tag names must be less than 50 characters";
+			}
+		}
+		return Object.keys(errors).length > 0 ? errors : undefined;
+	}
+
+	toJSON() {
+		const json = super.toJSON();
+
+		if (json.tags && json.tags instanceof TagCollection) {
+			json.tags = json.tags.toJSON();
 		}
 
-		return Object.keys(errors).length > 0 ? errors : undefined;
+		return json;
 	}
 
 	save(

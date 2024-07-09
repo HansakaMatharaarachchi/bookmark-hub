@@ -11,7 +11,7 @@ class Tag extends Model<TagAttributes> {
 	validate(attributes: Partial<TagAttributes>) {
 		const errors: Record<string, string> = {};
 
-		if (this.isValidName(attributes.name)) {
+		if (!this.isValidName(attributes.name)) {
 			errors.name =
 				"Name is required and must be less than 50 characters with no leading or trailing spaces";
 		}

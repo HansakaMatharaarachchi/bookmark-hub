@@ -8,10 +8,10 @@ import BookMark from "../../models/Bookmark";
 import Tag from "../../models/Tag";
 import bookmarksPageTemplate from "../../templates/pages/bookmarks.html?raw";
 import bookmarkFormTemplate from "../../templates/partials/bookmark-form.html?raw";
+import bookmarViewTemplate from "../../templates/partials/bookmark.html?raw";
 import BookmarkListView from "../BookmarkList";
 import NavBar from "../layouts/Navbar";
 import BasePage, { BasePageOptions } from "./BasePage";
-import bookmarViewTemplate from "../../templates/partials/bookmark.html?raw";
 
 interface BookmarkPageOptions extends BasePageOptions {
 	params?: {
@@ -55,7 +55,7 @@ class BookmarksPage extends BasePage {
 		return {
 			"click #add-new-bookmark-btn": "onAddNewBookmarkBtnClick",
 			"click #search-bookmarks-btn": "onSearchBookmarksBtnClick",
-			"click .bookmark": "renderBookmark",
+			"click .bookmark": "renderBookmark", // TODO fix tag url not working on double click on cards.
 		};
 	}
 
@@ -107,8 +107,10 @@ class BookmarksPage extends BasePage {
 	}
 
 	// Render the bookmark form to add/edit a bookmark.
-	private async renderBookMarkForm(bookMark = new BookMark()) {
-		const isCreatingNew = bookMark.isNew();
+	private async renderBookMarkForm(bookmark?: BookMark) {
+		bookmark = new BookMark(bookmark?.toJSON() ?? {});
+
+		const isCreatingNew = bookmark.isNew();
 
 		await Swal.fire({
 			title: `${isCreatingNew ? "Add" : "Edit"} Bookmark`,
@@ -118,14 +120,14 @@ class BookmarksPage extends BasePage {
 			allowEscapeKey: false,
 			allowOutsideClick: false,
 			html: template(bookmarkFormTemplate)({
-				bookmark: bookMark.toJSON(),
+				bookmark: bookmark.toJSON(),
 			}),
 			didRender: () => {
 				$(".swal2-confirm")
-					.prop("disabled", !bookMark.isValid())
+					.prop("disabled", !bookmark.isValid())
 					.attr(
 						"title",
-						bookMark.isValid() ? "" : "Please fill all the required fields."
+						bookmark.isValid() ? "" : "Please fill all the required fields."
 					);
 
 				$("input.bookmark-form-field").on("input", (event: any) => {
@@ -146,11 +148,11 @@ class BookmarksPage extends BasePage {
 								}, new TagCollection());
 						}
 
-						bookMark.set({ [fieldName]: fieldValue });
+						bookmark.set({ [fieldName]: fieldValue });
 
-						const isFormValid = bookMark.isValid();
+						const isFormValid = bookmark.isValid();
 
-						const errorMessage = bookMark.validationError?.[fieldName];
+						const errorMessage = bookmark.validationError?.[fieldName];
 						$(`#error-${fieldName}`).text(errorMessage ?? "");
 
 						// Enable/Disable the submit button.
@@ -165,17 +167,19 @@ class BookmarksPage extends BasePage {
 			},
 			preConfirm: async () => {
 				try {
-					if (bookMark.isValid()) {
+					if (bookmark.isValid()) {
 						if (isCreatingNew) {
-							await bookMark.save(null, {
+							await bookmark.save(null, {
 								wait: true,
 							});
 						} else {
-							await bookMark.save(null, {
+							await bookmark.save(null, {
 								wait: true,
 								patch: true,
 							});
 						}
+
+						this.collection.fetch();
 					}
 				} catch {
 					// Show the error message.
@@ -189,11 +193,23 @@ class BookmarksPage extends BasePage {
 		});
 	}
 
-	private renderBookmark(event: Event) {
+	private async deleteBookmark(bookmark: BookMark) {
+		try {
+			await bookmark.destroy({
+				wait: true,
+			});
+
+			return true;
+		} catch (exception) {
+			return false;
+		}
+	}
+
+	private renderBookmark(event: JQuery.ClickEvent) {
 		event.preventDefault();
 
 		if (event.currentTarget) {
-			const bookmarkId = this.$(event.currentTarget as any).data("bookmark-id");
+			const bookmarkId = this.$(event.currentTarget).data("bookmark-id");
 			const bookmarkToBeRendered = this.collection.get(bookmarkId);
 
 			Swal.fire({
@@ -202,6 +218,38 @@ class BookmarksPage extends BasePage {
 					bookmark: bookmarkToBeRendered.toJSON(),
 				}),
 				showConfirmButton: false,
+				didRender: () => {
+					$("#edit-bookmark-btn").on("click", async () => {
+						await this.renderBookMarkForm(bookmarkToBeRendered);
+					});
+					$("#delete-bookmark-btn").on("click", async () => {
+						Swal.fire({
+							title: "Are you sure?",
+							text: "You won't be able to revert this!",
+							icon: "warning",
+							showCancelButton: true,
+							confirmButtonText: "Yes, delete it!",
+							cancelButtonText: "No, cancel!",
+						}).then(async (result) => {
+							if (result.isConfirmed) {
+								Swal.showLoading();
+								if (await this.deleteBookmark(bookmarkToBeRendered)) {
+									Swal.close();
+
+									// Fetch the bookmarks again.
+									this.collection.fetch();
+								} else {
+									Swal.showValidationMessage(
+										"Failed to delete bookmark, please try again later."
+									);
+								}
+							} else {
+								// Re-render the bookmark view.
+								this.renderBookmark(event);
+							}
+						});
+					});
+				},
 			});
 		}
 	}

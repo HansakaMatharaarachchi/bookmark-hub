@@ -53,6 +53,10 @@ class BookmarkCollection extends Collection<BookMark> {
 		return this.perPage;
 	}
 
+	public getPageNumber() {
+		return this.pageNumber;
+	}
+
 	parse(response: any) {
 		const { bookmarks, total_bookmarks_count, limit, offset } =
 			response.data ?? {};

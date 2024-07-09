@@ -9,7 +9,6 @@ const routes = {
 	login: "login",
 	bookmarks: "bookmarks",
 	// "404": "notFound",
-	// "401": "unauthorized",
 	// "*path": "notFound",
 };
 
@@ -62,10 +61,6 @@ class AppRouter extends Router {
 
 	// notFound() {
 	// 	this.renderPage("notFound");
-	// }
-
-	// unauthorized() {
-	// 	this.renderPage("unauthorized");
 	// }
 
 	// Handle navigation using backbone history API.
