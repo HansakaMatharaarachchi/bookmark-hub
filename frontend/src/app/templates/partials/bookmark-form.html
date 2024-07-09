@@ -63,7 +63,7 @@
 			id="bookmark-tags"
 			placeholder="Add tags..."
 			class="h-14 px-4 py-2.5 text-sm text-input-text rounded-xl bg-primary-ash placeholder:placeholder-text sm:leading-6 focus:outline-none focus:ring-1 focus:ring-primary/50 bookmark-form-field"
-			value="<%- bookmark.tags?.join(', ') %>"
+			value="<%- bookmark.tags?.map(tag => tag.name).join(', ') %>"
 		/>
 		<span
 			id="error-tags"

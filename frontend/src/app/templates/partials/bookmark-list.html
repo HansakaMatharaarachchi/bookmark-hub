@@ -39,7 +39,10 @@
 	>
 		<% bookmarks.forEach((bookmark) => { %>
 		<!-- Bookmark Card -->
-		<div class="hover:shadow-md">
+		<div
+			class="hover:shadow-md bookmark"
+			data-bookmark-id="<%- bookmark.bookmark_id %>"
+		>
 			<!-- Title -->
 			<div class="flex flex-wrap items-center gap-2.5 text-black/80">
 				<span class="flex-1 text-base line-clamp-1 min-w-80">

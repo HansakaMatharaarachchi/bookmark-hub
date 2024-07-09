@@ -1,0 +1,63 @@
+<div class="flex flex-col">
+	<div class="flex flex-wrap items-start justify-between md:flex-nowrap">
+		<? if(bookmark.title) { ?>
+		<span class="inline-block text-2xl break-all"> <%- bookmark.title %> </span>
+		<? } ?>
+	</div>
+	<div class="flex flex-wrap justify-between">
+		<div class="flex flex-wrap gap-2.5">
+			<div class="flex items-center text-sm text-black/80">
+				<? if(bookmark.created_at) { ?>
+				<span class="text-xs italic text-black/75">
+					added <%- bookmark.created_at.fromNow() %>
+				</span>
+				<? } ?>
+			</div>
+		</div>
+	</div>
+	<? if(bookmark.url) { ?>
+	<div class="p-4 my-4 text-sm rounded-md bg-primary-ash text-black/80">
+		<%= bookmark.url %>
+	</div>
+	<? } ?>
+	<div class="flex flex-col gap-2.5 py-1.5">
+		<div class="flex flex-wrap pr-2 p-y-1.5 items-center justify-between">
+			<!-- Tags -->
+			<div class="flex items-center gap-1.5">
+				<span class="text-sm text-black/75">Tags:</span>
+				<div
+					class="flex flex-wrap gap-1.5 text-sm text-primary-text *:rounded-md *:bg-primary *:px-2 *:py-1.5"
+				>
+					<% bookmark.tags?.forEach((tag) => { %>
+					<a
+						class="hover:ring-2 hover:ring-primary/50 nav-link"
+						href="bookmarks?tags=<%- tag.name %>"
+					>
+						<%- tag.name %>
+					</a>
+					<% }); %>
+				</div>
+			</div>
+			<div class="flex gap-2.5 items-center">
+				<!-- Edit/Delete -->
+				<div class="flex items-center gap-1 text-sm">
+					<button
+						id="edit-bookmark-btn"
+						data-id="<%- bookmark.id %>"
+						title="Edit bookmark"
+					>
+						Edit
+					</button>
+					<button
+						id="delete-bookmark-btn"
+						data-id="<%- bookmark.id %>"
+						title="Delete bookmark"
+						class="text-red-500"
+					>
+						Delete
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

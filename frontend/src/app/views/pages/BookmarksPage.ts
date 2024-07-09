@@ -2,15 +2,16 @@ import { history } from "backbone";
 import $ from "jquery";
 import Swal from "sweetalert2";
 import { template } from "underscore";
+import BookmarkCollection from "../../collections/BookmarkCollection";
 import TagCollection from "../../collections/TagCollection";
 import BookMark from "../../models/Bookmark";
 import Tag from "../../models/Tag";
 import bookmarksPageTemplate from "../../templates/pages/bookmarks.html?raw";
 import bookmarkFormTemplate from "../../templates/partials/bookmark-form.html?raw";
+import BookmarkListView from "../BookmarkList";
 import NavBar from "../layouts/Navbar";
 import BasePage, { BasePageOptions } from "./BasePage";
-import BookmarkCollection from "../../collections/BookmarkCollection";
-import BookmarkListView from "../BookmarkList";
+import bookmarViewTemplate from "../../templates/partials/bookmark.html?raw";
 
 interface BookmarkPageOptions extends BasePageOptions {
 	params?: {
@@ -54,6 +55,7 @@ class BookmarksPage extends BasePage {
 		return {
 			"click #add-new-bookmark-btn": "onAddNewBookmarkBtnClick",
 			"click #search-bookmarks-btn": "onSearchBookmarksBtnClick",
+			"click .bookmark": "renderBookmark",
 		};
 	}
 
@@ -187,40 +189,20 @@ class BookmarksPage extends BasePage {
 		});
 	}
 
-	private renderBookmark(bookmark: BookMark) {
-		Swal.fire({
-			html: template(bookmarkFormTemplate)({
-				bookmark: bookmark.toJSON(),
-			}),
-		});
-	}
+	private renderBookmark(event: Event) {
+		event.preventDefault();
 
-	private async fetchExistingBookmarkById(id: string) {
-		try {
-			await this.showLoader();
+		if (event.currentTarget) {
+			const bookmarkId = this.$(event.currentTarget as any).data("bookmark-id");
+			const bookmarkToBeRendered = this.collection.get(bookmarkId);
 
-			const existingQuestion = new BookMark({
-				bookmark_id: id,
+			Swal.fire({
+				showCloseButton: true,
+				html: template(bookmarViewTemplate)({
+					bookmark: bookmarkToBeRendered.toJSON(),
+				}),
+				showConfirmButton: false,
 			});
-
-			return await existingQuestion.fetch();
-		} catch (e) {
-			const error = e as any;
-
-			// TODO add 404, 403, 500 error pages.
-			if (error.status === 404 || error.status === 403) {
-				history.navigate(`/${error.status}`, {
-					replace: true,
-					trigger: true,
-				});
-			} else {
-				history.navigate("500", {
-					replace: true,
-					trigger: true,
-				});
-			}
-		} finally {
-			this.hideLoader();
 		}
 	}
 }
