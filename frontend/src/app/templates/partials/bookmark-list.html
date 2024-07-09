@@ -1,0 +1,182 @@
+<% if (isLoading) { %>
+<div class="flex items-center justify-center flex-1">
+	<div
+		class="size-[60px] rounded-full bg-primary animate-ping"
+		title="Loading..."
+	></div>
+</div>
+<% } else if (isError) { %>
+<div class="flex items-center justify-center flex-1">
+	Oops! Something went wrong. Please try refreshing the page.
+</div>
+<% } else if (bookmarks.length === 0) { %>
+<!-- EMPTY Bookmarks -->
+<div class="flex flex-col flex-1">
+	<div class="flex flex-col items-center justify-center flex-1 py-12 size-full">
+		<svg
+			class="mb-4 size-28 text-slate-200"
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path
+				d="M5 3C4.5313 3 4.12549 3.32553 4.02381 3.78307L2.02381 12.7831C2.00799 12.8543 2 12.927 2 13V20C2 20.5523 2.44772 21 3 21H21C21.5523 21 22 20.5523 22 20V13C22 12.927 21.992 12.8543 21.9762 12.7831L19.9762 3.78307C19.8745 3.32553 19.4687 3 19 3H5ZM19.7534 12H15C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12H4.24662L5.80217 5H18.1978L19.7534 12Z"
+			></path>
+		</svg>
+		<p class="mb-2 text-xl font-semibold text-gray-600">
+			Your bookmark list is empty
+		</p>
+		<p class="mb-6 text-center text-gray-500">
+			Add bookmarks to keep track of your favorite websites
+		</p>
+	</div>
+</div>
+<% } else { %>
+<div class="flex flex-col flex-1 gap-2.5 py-4">
+	<!-- Bookmarks -->
+	<div
+		class="flex flex-col flex-1 gap-2.5 py-4 *:flex *:w-full *:cursor-pointer *:flex-col *:gap-2.5 *:rounded *:border *:border-gray-200 *:p-2.5 *:shadow-sm"
+	>
+		<% bookmarks.forEach((bookmark) => { %>
+		<!-- Bookmark Card -->
+		<div class="hover:shadow-md">
+			<!-- Title -->
+			<div class="flex flex-wrap items-center gap-2.5 text-black/80">
+				<span class="flex-1 text-base line-clamp-1 min-w-80">
+					<%- bookmark.title %>
+				</span>
+			</div>
+			<!-- URL -->
+			<p class="text-sm line-clamp-1 min-h-6 text-black/70">
+				<%- bookmark.url %>
+			</p>
+			<!-- Info -->
+			<div class="flex flex-wrap justify-between">
+				<!-- Tags -->
+				<div class="flex flex-wrap items-center gap-1.5">
+					<span class="text-sm text-black/75">Tags:</span>
+					<div
+						class="flex flex-wrap gap-1.5 text-sm text-primary-text *:rounded-md *:bg-primary *:px-2 *:py-1.5"
+					>
+						<% bookmark.tags?.forEach((tag) => { %>
+						<a
+							class="hover:ring-2 hover:ring-primary/50 nav-link"
+							href="bookmarks?tags=<%- tag.name %>"
+						>
+							<%- tag.name %>
+						</a>
+						<% }); %>
+					</div>
+				</div>
+				<div class="flex items-center text-sm text-black/75">
+					<span
+						title="<%- bookmark.created_at.format('MMMM Do YYYY, h:mm:ss a') %>"
+					>
+						<%- bookmark.created_at.fromNow() %>
+					</span>
+				</div>
+			</div>
+		</div>
+		<% }); %>
+	</div>
+
+	<!-- Pagination -->
+	<div
+		class="flex items-center justify-between py-3 bg-white border-t border-gray-200"
+	>
+		<div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+			<div>
+				<p class="text-sm text-gray-700">
+					Showing <% if (totalBookmarkCount > bookmarks.length) { %>
+					<span class="font-medium">1</span>
+					to
+					<span class="font-medium">10</span>
+					of <% } %>
+					<span class="font-medium"> <%- totalBookmarkCount %> </span>
+					bookmarks
+				</p>
+			</div>
+			<% if (totalBookmarkCount > bookmarks.length) { %>
+			<div>
+				<nav
+					class="inline-flex -space-x-px rounded-md shadow-sm isolate"
+					aria-label="Pagination"
+				>
+					<a
+						href="#"
+						class="relative inline-flex items-center px-2 py-2 text-gray-400 rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+					>
+						<span class="sr-only">Previous</span>
+						<svg
+							class="w-5 h-5"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+							aria-hidden="true"
+						>
+							<path
+								fill-rule="evenodd"
+								d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+					</a>
+					<a
+						href="#"
+						aria-current="page"
+						class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-indigo-600 focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						>1</a
+					>
+					<a
+						href="#"
+						class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+						>2</a
+					>
+					<a
+						href="#"
+						class="relative items-center hidden px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+						>3</a
+					>
+					<span
+						class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0"
+						>...</span
+					>
+					<a
+						href="#"
+						class="relative items-center hidden px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
+						>8</a
+					>
+					<a
+						href="#"
+						class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+						>9</a
+					>
+					<a
+						href="#"
+						class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+						>10</a
+					>
+					<a
+						href="#"
+						class="relative inline-flex items-center px-2 py-2 text-gray-400 rounded-r-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+					>
+						<span class="sr-only">Next</span>
+						<svg
+							class="w-5 h-5"
+							viewBox="0 0 20 20"
+							fill="currentColor"
+							aria-hidden="true"
+						>
+							<path
+								fill-rule="evenodd"
+								d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+					</a>
+				</nav>
+			</div>
+			<% } %>
+		</div>
+	</div>
+</div>
+<% } %>

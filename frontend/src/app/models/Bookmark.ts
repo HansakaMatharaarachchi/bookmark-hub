@@ -1,4 +1,5 @@
 import { Model, ModelSaveOptions } from "backbone";
+import moment, { Moment } from "moment";
 import { isEmpty, isString } from "underscore";
 import { BOOKMARK_API_URL } from "../../constants";
 import TagCollection from "../collections/TagCollection";
@@ -9,12 +10,20 @@ export type BookmarkAttributes = {
 	title: string;
 	url: string;
 	tags: TagCollection;
-	created_at?: string;
+	created_at?: Moment;
 };
 
 class BookMark extends Model<Partial<BookmarkAttributes>> {
 	urlRoot = BOOKMARK_API_URL;
 	idAttribute = "bookmark_id";
+
+	constructor(attributes?: BookmarkAttributes) {
+		super(attributes);
+
+		if (attributes?.created_at) {
+			this.set("created_at", moment(attributes.created_at));
+		}
+	}
 
 	validate(attributes: Partial<BookmarkAttributes>) {
 		const errors: Record<string, string> = {};

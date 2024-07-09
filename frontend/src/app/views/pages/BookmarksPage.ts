@@ -9,11 +9,14 @@ import bookmarksPageTemplate from "../../templates/pages/bookmarks.html?raw";
 import bookmarkFormTemplate from "../../templates/partials/bookmark-form.html?raw";
 import NavBar from "../layouts/Navbar";
 import BasePage, { BasePageOptions } from "./BasePage";
+import BookmarkCollection from "../../collections/BookmarkCollection";
+import BookmarkListView from "../BookmarkList";
+
 interface BookmarkPageOptions extends BasePageOptions {
 	params?: {
 		// Filters to fetch bookmarks.
 		filters?: {
-			page: number;
+			pageNumber: number;
 			tags?: string[];
 		};
 	};
@@ -23,35 +26,82 @@ class BookmarksPage extends BasePage {
 	private navbar = new NavBar({
 		user: this.user,
 	});
+	private bookmarkListView: BookmarkListView;
+
+	collection: BookmarkCollection;
 
 	constructor(options?: BookmarkPageOptions) {
 		super({
 			...options,
 			className: "bookmark-page",
 		});
+
 		this.setTitle("BookmarkHub");
+		this.collection = new BookmarkCollection();
+
+		const { pageNumber = 1, tags = [] } = options?.params?.filters ?? {};
+
+		this.bookmarkListView = new BookmarkListView({
+			collection: this.collection,
+			config: {
+				pageNumber,
+				tags,
+			},
+		});
 	}
 
 	events() {
 		return {
 			"click #add-new-bookmark-btn": "onAddNewBookmarkBtnClick",
+			"click #search-bookmarks-btn": "onSearchBookmarksBtnClick",
 		};
 	}
 
 	render() {
 		super.render();
 
-		// Render the bookmarks page.
-		this.$el.html(template(bookmarksPageTemplate)());
-
 		// Render the navbar.
-		this.$el.prepend(this.navbar.render().$el);
+		this.$el.append(this.navbar.render().$el);
+
+		// Render the bookmarks page.
+		this.$el.append(template(bookmarksPageTemplate)());
+		// Set the search input value, if any.
+		this.$("#search-bookmarks-input").val(
+			this.bookmarkListView.getConfig()?.tags?.join(", ") ?? ""
+		);
+
+		// Render the bookmark list.
+		this.bookmarkListView.setElement(this.$("#bookmark-list")).render();
 
 		return this;
 	}
 
 	private async onAddNewBookmarkBtnClick() {
 		await this.renderBookMarkForm();
+	}
+
+	private async onSearchBookmarksBtnClick(event: Event) {
+		event.preventDefault();
+
+		const tagsNeedBeFiltered = this.$("#search-bookmarks-input")
+			.val()
+			?.toString()
+			.split(",")
+			.reduce((acc: string[], tag: string) => {
+				const trimmedTag = tag.trim();
+
+				if (trimmedTag) {
+					acc.push(trimmedTag);
+				}
+				return acc;
+			}, []);
+
+		if (tagsNeedBeFiltered?.length) {
+			// Redirect to the bookmarks page with the tags filter.
+			history.navigate(`bookmarks?tags=${tagsNeedBeFiltered.join(",")}`, {
+				trigger: true,
+			});
+		}
 	}
 
 	// Render the bookmark form to add/edit a bookmark.
@@ -137,7 +187,7 @@ class BookmarksPage extends BasePage {
 		});
 	}
 
-	private renderBookMark(bookmark: BookMark) {
+	private renderBookmark(bookmark: BookMark) {
 		Swal.fire({
 			html: template(bookmarkFormTemplate)({
 				bookmark: bookmark.toJSON(),

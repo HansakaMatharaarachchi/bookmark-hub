@@ -36,7 +36,28 @@ class AppRouter extends Router {
 	}
 
 	bookmarks() {
-		this.renderPage("bookmarks");
+		const queryParams = new URLSearchParams(window.location.search);
+
+		const page = parseInt(queryParams.get("page") ?? "1");
+		const tags = queryParams
+			?.get("tags")
+			?.split(",")
+			.reduce((acc: string[], tag: string) => {
+				const trimmedTag = tag.trim();
+
+				if (trimmedTag) {
+					acc.push(trimmedTag);
+				}
+				return acc;
+			}, []);
+
+		// Pass the query param values to the bookmarks page.
+		this.renderPage("bookmarks", {
+			filters: {
+				page,
+				tags,
+			},
+		});
 	}
 
 	// notFound() {

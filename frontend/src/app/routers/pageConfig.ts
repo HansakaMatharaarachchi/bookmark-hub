@@ -1,5 +1,5 @@
 import BasePage from "../views/pages/BasePage";
-import BookmarksPage from "../views/pages/BookMarks";
+import BookmarksPage from "../views/pages/BookmarksPage";
 import LoginPage from "../views/pages/LoginPage";
 import SignupPage from "../views/pages/SignupPage";
 
