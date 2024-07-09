@@ -17,7 +17,7 @@ class BookmarkCollection extends Collection<BookMark> {
 	private DEFAULT_PAGE = 1;
 	private DEFAULT_PER_PAGE = 10;
 
-	private pageNumber?: number;
+	private currentPageNumber?: number;
 	private perPage?: number;
 	private totalBookmarkCount?: number;
 
@@ -26,7 +26,7 @@ class BookmarkCollection extends Collection<BookMark> {
 		this.model = BookMark;
 		this.url = BOOKMARK_API_URL;
 
-		this.pageNumber = options?.page ?? this.DEFAULT_PAGE;
+		this.currentPageNumber = options?.page ?? this.DEFAULT_PAGE;
 		this.perPage = options?.perPage ?? this.DEFAULT_PER_PAGE;
 		this.totalBookmarkCount = options?.totalBookmarkCount;
 	}
@@ -57,15 +57,15 @@ class BookmarkCollection extends Collection<BookMark> {
 		return this.perPage;
 	}
 
-	public getPageNumber() {
-		return this.pageNumber;
+	public getCurrentPageNumber() {
+		return this.currentPageNumber;
 	}
 
 	parse(response: any) {
 		const { bookmarks, total_bookmarks_count, limit, offset } =
 			response.data ?? {};
 
-		this.pageNumber = Math.floor(offset / limit) + 1;
+		this.currentPageNumber = Math.floor(offset / limit) + 1;
 		this.perPage = limit;
 		this.totalBookmarkCount = total_bookmarks_count;
 

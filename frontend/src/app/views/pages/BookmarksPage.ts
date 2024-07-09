@@ -98,12 +98,17 @@ class BookmarksPage extends BasePage {
 				return acc;
 			}, []);
 
-		if (tagsNeedBeFiltered?.length) {
-			// Redirect to the bookmarks page with the tags filter.
-			history.navigate(`bookmarks?tags=${tagsNeedBeFiltered.join(",")}`, {
+		// Redirect to the bookmarks page with the tags filter.
+		history.navigate(
+			`bookmarks${
+				tagsNeedBeFiltered?.length
+					? `?tags=${tagsNeedBeFiltered.join(",")}`
+					: ""
+			}`,
+			{
 				trigger: true,
-			});
-		}
+			}
+		);
 	}
 
 	// Render the bookmark form to add/edit a bookmark.
@@ -179,7 +184,6 @@ class BookmarksPage extends BasePage {
 						this.collection.fetch();
 					}
 				} catch {
-					// Show the error message.
 					Swal.showValidationMessage(
 						`Failed to ${
 							isCreatingNew ? "add" : "edit"
@@ -246,6 +250,7 @@ class BookmarksPage extends BasePage {
 						}).then(async (result) => {
 							if (result.isConfirmed) {
 								Swal.showLoading();
+
 								if (await this.deleteBookmark(bookmarkToBeRendered)) {
 									Swal.fire({
 										title: "Deleted!",

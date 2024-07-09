@@ -45,6 +45,8 @@ class BookmarksList extends View<Model> {
 				isLoading: this.isBookmarksLoading,
 				isError: this.isBookmarksError,
 				bookmarks: this.collection.toJSON(),
+				tags: this.config?.tags,
+				currentPageNumber: this.collection.getCurrentPageNumber(),
 				bookmarksPerPage: this.collection.getPerPageCount(),
 				totalBookmarkCount: this.collection.getTotalBookmarkCount(),
 			})
