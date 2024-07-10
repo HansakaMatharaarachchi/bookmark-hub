@@ -17,7 +17,14 @@
 	</div>
 	<? if(bookmark.url) { ?>
 	<div class="p-4 my-4 text-sm rounded-md bg-primary-ash text-black/80">
-		<%= bookmark.url %>
+		<a
+			title="Visit bookmark"
+			href="<%- bookmark.url %>"
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			<%= bookmark.url %>
+		</a>
 	</div>
 	<? } ?>
 	<div class="flex flex-col gap-2.5 py-1.5">

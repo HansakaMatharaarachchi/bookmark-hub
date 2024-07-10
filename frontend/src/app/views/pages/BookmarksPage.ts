@@ -55,7 +55,7 @@ class BookmarksPage extends BasePage {
 		return {
 			"click #add-new-bookmark-btn": "onAddNewBookmarkBtnClick",
 			"click #search-bookmarks-btn": "onSearchBookmarksBtnClick",
-			"click .bookmark": "renderBookmark", // TODO fix tag url not working on double click on cards.
+			"click .bookmark": "renderBookmark", // TODO fix tag url not working on double click on cards due to propagation.
 		};
 	}
 
