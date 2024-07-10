@@ -1,0 +1,102 @@
+<main class="flex items-center justify-center flex-1 min-h-svh">
+	<div class="flex flex-col items-center w-full p-6 md:w-auto">
+		<!-- Banner -->
+		<div class="flex flex-col items-start justify-center gap-4 px-12 py-6">
+			<div class="flex flex-col text-3xl">
+				<img src="logo.svg" alt="logo" class="w-64" />
+			</div>
+		</div>
+		<!-- Sign Up form -->
+		<form
+			id="signUpForm"
+			class="flex sm:min-w-[454px] lg:w-[560px] flex-1 flex-col gap-4 p-8 rounded-xl border border-black/10"
+		>
+			<span class="text-3xl text-center">Sign Up</span>
+			<div class="flex flex-col gap-2.5">
+				<label
+					for="emailAddress"
+					title="a valid email address is required to sign up"
+					class="text-base place-self-start text-black/80 cursor-help"
+				>
+					Email address
+					<span class="text-red-500">*</span>
+				</label>
+				<input
+					type="email"
+					required
+					name="email"
+					id="emailAddress"
+					class="h-14 px-4 py-2.5 text-sm text-input-text rounded-xl bg-primary-ash placeholder:placeholder-text sm:leading-6 focus:outline-none focus:ring-1 focus:ring-primary/50 form-field"
+					placeholder="Enter email address..."
+				/>
+				<span id="error-email" class="text-sm text-red-500 form-error"></span>
+			</div>
+			<div class="flex flex-col gap-2.5">
+				<label
+					for="nickname"
+					title="nickname is required to sign up"
+					class="text-base place-self-start text-black/80 cursor-help"
+				>
+					Nickname
+					<span class="text-sm">
+						(Max. 20 characters, letters, numbers, spaces, _ are allowed)
+					</span>
+					<span class="text-red-500">*</span>
+				</label>
+				<input
+					type="text"
+					required
+					name="nickname"
+					id="nickname"
+					class="h-14 px-4 py-2.5 text-sm text-input-text rounded-xl bg-primary-ash placeholder:placeholder-text sm:leading-6 focus:outline-none focus:ring-1 focus:ring-primary/50 form-field"
+					placeholder="Enter nickname..."
+				/>
+				<span
+					id="error-nickname"
+					class="text-sm text-red-500 form-error"
+				></span>
+			</div>
+			<div class="flex flex-col gap-2.5">
+				<div class="flex flex-col gap">
+					<label
+						for="password"
+						title="A strong password is required to sign up"
+						class="text-base place-self-start text-black/80 cursor-help"
+					>
+						Password
+						<span class="text-sm">
+							(Min. 8 characters, with a mix of uppercase, lowercase, numbers,
+							and special characters.)
+						</span>
+						<span class="text-red-500 cursor-pointer">*</span>
+					</label>
+				</div>
+				<input
+					type="password"
+					required
+					name="password"
+					id="password"
+					class="h-14 px-4 py-2.5 text-sm text-input-text rounded-xl bg-primary-ash placeholder:placeholder-text sm:leading-6 focus:outline-none focus:ring-1 focus:ring-primary/50 form-field"
+					placeholder="Enter password..."
+				/>
+				<span
+					id="error-password"
+					class="text-sm text-red-500 form-error"
+				></span>
+			</div>
+			<button
+				type="submit"
+				id="submit-btn"
+				class="self-end px-8 py-4 text-sm font-medium rounded-full text-primary-text bg-primary hover:ring-primary/50"
+			>
+				Sign Up
+			</button>
+			<span class="text-base text-center"
+				>Already a member?
+				<a href="/login" class="underline text-primary nav-link"
+					>Log In</a
+				></span
+			>
+		</form>
+	</div>
+</main>

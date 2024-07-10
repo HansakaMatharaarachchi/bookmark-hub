@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+	font-family: "circular-Std";
+	src: url("../fonts/CircularStd.ttf");
+}
+
+.swal2-confirm {
+	@apply bg-primary !important;
+}
+
+.tox .tox-edit-area::before {
+	@apply border border-primary/50 !important;
+}
+
+.bookmark-page {
+	@apply flex min-h-screen flex-col;
+}

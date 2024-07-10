@@ -1,0 +1,73 @@
+<form class="flex flex-col gap-4 mt-5">
+	<div class="flex flex-col gap-2.5">
+		<label
+			for="bookmark-title"
+			title="a title is required to add a bookmark"
+			class="text-base place-self-start text-black/80 cursor-help"
+		>
+			Title
+			<span class="text-red-500">*</span>
+		</label>
+		<input
+			type="text"
+			required
+			name="title"
+			id="bookmark-title"
+			class="h-14 px-4 py-2.5 text-sm text-input-text rounded-xl bg-primary-ash placeholder:placeholder-text sm:leading-6 focus:outline-none focus:ring-1 focus:ring-primary/50 bookmark-form-field"
+			placeholder="Add a Title..."
+			value="<%- bookmark.title %>"
+		/>
+		<span
+			id="error-title"
+			class="items-start self-start text-sm text-red-500 form-error"
+		></span>
+	</div>
+	<div class="flex flex-col gap-2.5">
+		<label
+			for="bookmark-url"
+			title="a url is required to add a bookmark"
+			class="text-base place-self-start text-black/80 cursor-help"
+		>
+			Url
+			<span class="text-red-500">*</span>
+		</label>
+		<input
+			required
+			name="url"
+			id="bookmark-url"
+			placeholder="Add the URL..."
+			class="h-14 px-4 py-2.5 text-sm text-input-text rounded-xl bg-primary-ash placeholder:placeholder-text sm:leading-6 focus:outline-none focus:ring-1 focus:ring-primary/50 bookmark-form-field"
+			value="<%- bookmark.url %>"
+		/>
+		<span
+			id="error-url"
+			class="self-start text-sm text-red-500 form-error"
+		></span>
+		<span
+			id="error-short_description"
+			class="self-start text-sm text-red-500 form-error"
+		></span>
+	</div>
+	<div class="flex flex-col gap-2.5">
+		<label
+			for="tags"
+			title="add tags to categorize your bookmarks"
+			class="text-base place-self-start text-black/80 cursor-help"
+		>
+			Tags
+			<span class="text-red-500">*</span>
+		</label>
+		<input
+			required
+			name="tags"
+			id="bookmark-tags"
+			placeholder="Add tags..."
+			class="h-14 px-4 py-2.5 text-sm text-input-text rounded-xl bg-primary-ash placeholder:placeholder-text sm:leading-6 focus:outline-none focus:ring-1 focus:ring-primary/50 bookmark-form-field"
+			value="<%- bookmark.tags?.map(tag => tag.name).join(', ') %>"
+		/>
+		<span
+			id="error-tags"
+			class="self-start text-sm text-red-500 form-error"
+		></span>
+	</div>
+</form>
