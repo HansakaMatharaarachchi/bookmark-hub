@@ -64,6 +64,14 @@ class BookMark extends Model<Partial<BookmarkAttributes>> {
 			if (invalidTags.length > 0) {
 				errors.tags = "Tag names must be less than 50 characters";
 			}
+
+			// check if there are duplicated tags.
+			const tagNames = attributes.tags.pluck("name");
+			const uniqueTagNames = new Set(tagNames);
+
+			if (tagNames.length !== uniqueTagNames.size) {
+				errors.tags = "Duplicate tags are not allowed";
+			}
 		}
 		return Object.keys(errors).length > 0 ? errors : undefined;
 	}
