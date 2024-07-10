@@ -1,5 +1,6 @@
 import BasePage from "../views/pages/BasePage";
 import BookmarksPage from "../views/pages/BookmarksPage";
+import NotFoundPage from "../views/pages/error/NotFound";
 import LoginPage from "../views/pages/LoginPage";
 import SignupPage from "../views/pages/SignupPage";
 
@@ -20,6 +21,9 @@ export const pages: Pages = {
 	bookmarks: {
 		page: BookmarksPage,
 		requiredAuth: true,
+	},
+	notFound: {
+		page: NotFoundPage,
 	},
 };
 

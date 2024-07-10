@@ -8,8 +8,8 @@ const routes = {
 	signup: "signup",
 	login: "login",
 	bookmarks: "bookmarks",
-	// "404": "notFound",
-	// "*path": "notFound",
+	"404": "notFound",
+	"*path": "notFound",
 };
 
 type AppRouterOptions = {
@@ -59,9 +59,9 @@ class AppRouter extends Router {
 		});
 	}
 
-	// notFound() {
-	// 	this.renderPage("notFound");
-	// }
+	notFound() {
+		this.renderPage("notFound");
+	}
 
 	// Handle navigation using backbone history API.
 	// !important: In order to work, anchor tags must have the class "nav-link".
