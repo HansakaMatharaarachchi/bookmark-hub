@@ -117,7 +117,7 @@ class Auth {
 	private async refreshToken() {
 		return new Promise<void>((resolve, reject) => {
 			ajax({
-				url: `${AUTH_API_URL}/refresh_token`,
+				url: `${AUTH_API_URL}/refresh`,
 				method: "POST",
 				xhrFields: {
 					withCredentials: true,
