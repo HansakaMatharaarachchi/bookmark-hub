@@ -5,6 +5,8 @@ require_once APPPATH . 'models/exceptions.php';
 
 class Member_model extends CI_Model
 {
+  private $table = 'member';
+
   public function __construct()
   {
     parent::__construct();
@@ -42,7 +44,7 @@ class Member_model extends CI_Model
       'password_hash' => $password_hash,
     );
 
-    $this->db->insert('member', $data);
+    $this->db->insert($this->table, $data);
     return $this->db->insert_id();
   }
 
@@ -54,7 +56,7 @@ class Member_model extends CI_Model
     }
     $this->db->select('member_id, nickname, created_at');
     $this->db->where('member_id', $member_id);
-    $query = $this->db->get('member');
+    $query = $this->db->get($this->table);
 
     return $query->row();
   }
@@ -66,7 +68,7 @@ class Member_model extends CI_Model
     }
     $this->db->select('member_id, nickname, created_at');
     $this->db->where('email', $email);
-    $query = $this->db->get('member');
+    $query = $this->db->get($this->table);
 
     return $query->row();
   }
@@ -89,7 +91,7 @@ class Member_model extends CI_Model
     }
 
     $this->db->where('member_id', $member_id);
-    $this->db->delete('member');
+    $this->db->delete($this->table);
 
     if ($this->db->affected_rows() === 0) {
       throw new NotFoundException('Member not found');
@@ -99,7 +101,7 @@ class Member_model extends CI_Model
   private function is_email_unused($email)
   {
     $this->db->where('email', $email);
-    $query = $this->db->get('member');
+    $query = $this->db->get($this->table);
 
     return $query->num_rows() === 0;
   }
@@ -108,7 +110,7 @@ class Member_model extends CI_Model
   {
     $this->db->select('password_hash');
     $this->db->where('email', $email);
-    $query = $this->db->get('member');
+    $query = $this->db->get($this->table);
     $result = $query->row();
 
     return $result ? $result->password_hash : null;
